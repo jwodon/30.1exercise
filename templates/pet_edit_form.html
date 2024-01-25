@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %}Edit Pet{% endblock %} {% block content%}
+
+<div class="container">
+    <h1 class="display-1 text-center">{{pet_to_edit.name}}</h1>
+    {% if pet_to_edit.photo_url %}
+    <div class="row justify-content-center">
+        <div class="col-sm-6 text-center">
+            <img src="{{ pet_to_edit.photo_url }}" class="img-fluid mx-auto" style="max-width: 250px" />
+        </div>
+    </div>
+    {% endif %}
+    <p class="text-center">Species: {{pet_to_edit.species}}</p>
+    <p class="text-center">Age: {{pet_to_edit.age}}</p>
+
+    <h2 class="display-2 text-center">Update</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form id="pet_edit_form" method="POST">
+                {{ form.hidden_tag() }} {% for field in form if field.widget.input_type != 'hidden' %}
+                <div class="form-group">
+                    {% if field.widget.input_type == 'checkbox' %}
+                    <div class="form-check">
+                        {{ field(class="form-check-input", id="available") }}
+                        <label class="form-check-label" for="available">{{ field.label }}</label>
+                    </div>
+                    {% else %} {{ field.label }} {{ field(class="form-control") }} {% endif %} {% for error in
+                    field.errors %}
+                    <small class="form-text text-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                <a href="/pets" class="btn btn-danger btn-lg">Go Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
